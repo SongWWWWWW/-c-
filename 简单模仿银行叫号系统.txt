@@ -1,0 +1,122 @@
+//键盘交互与计时器-容器
+//第三次实验：键盘交互与计时器 - 容器
+//模拟一个办事机构（如银行）的叫号程序。
+//在一个显示区域内从上到下按顺序显示5个号码，最开始是1－5。四个方向键控制显示区域的移动。空格键产生一个新号码，将最前面的号码挤出显示区。ESC键退出系统。
+//使用键盘交互与计时器实现该程序，使用容器装载号码。
+#include<iostream>
+#include<vector>
+#include<Windows.h>
+#include<conio.h>
+#include<stdio.h>
+using namespace std;
+class keyboard
+{
+private:
+	int i = 0;
+	int up=0;
+	int down=0;
+	int left=0;
+	int right=0;
+	vector<int>ve {1,2,3,4,5};
+	vector<int>::iterator it;
+public:
+	keyboard()
+	{
+		it = ve.begin();
+	}
+	void output();
+	void spacebar();
+	void upadd() 
+	{
+		if(down>up)
+		++up; 
+	};
+	void downadd() { ++down; };
+	void rightadd() { ++right; };
+	void leftadd() 
+	{
+		if(right>left)
+		++left; 
+	};
+	void reserve()
+	{
+		ve.reserve(20);
+	}
+	void gotoxy(int x, int y)//光标移动函数
+	{
+		COORD scrn;//<windows.h>内的一个结构，两个成员X,Y,X表示横坐标，Y表示纵坐标。
+		HANDLE houtput = GetStdHandle(STD_OUTPUT_HANDLE);//表示从一个特定的标准设备（标准输出）中取出一个句柄（用来标识不同设备的数据），本质是结构体指针，用来标识对象。
+		scrn.X = x;
+		scrn.Y = y;
+		SetConsoleCursorPosition(houtput, scrn);//计算机函数，通过修改scrn就可以实现光标的移动
+	}
+
+};
+
+void keyboard::output()
+{
+	gotoxy(right - left, down - up);
+	cout << *it;
+	gotoxy(right - left, down - up+1);
+	cout << *(it+1);
+	gotoxy(right - left, down - up+2);
+	cout << *(it+2); 
+	gotoxy(right - left, down - up+3);
+	cout << *(it+3);
+	gotoxy(right - left, down - up+4);
+	cout << *(it+4);
+}
+void keyboard::spacebar()
+{
+	ve.push_back(*(ve.end()-1) + 1);//切记ve.end()返回的是最后一个元素的后面一个位置，这里都是泪啊
+	++i;
+	it = ve.begin()+i;
+}
+int main()
+{
+	//基本思路：检测键盘输入，记录输入值，根据输入情况判断输出，
+	//在下一次输入之前清屏，每次循环都要将ch重置。
+	keyboard k;
+	k.output();
+	char ch = 0;
+	while (true)
+	{
+		if (_kbhit())//_kbhit的原型是int _kbhit(void),键盘有按键敲下，则返回为!0，否则为0。
+		{
+			ch = _getch();//<conio.h>读入字符，但不显示字符
+		}
+		if (ch == ' ')
+		{
+			k.spacebar();
+			k.output();
+		}
+		if (ch==72)//上下左右的ascll码为72 80 75 77
+		{
+			k.output();
+			k.upadd();
+		}
+		else if (ch == 80)
+		{	
+			k.output();
+			k.downadd();
+		}
+		else if (ch == 75)
+		{
+			k.output();
+			k.leftadd();
+		}
+		else if (ch == 77)
+		{
+			k.output();
+			k.rightadd();
+		}
+		else if (ch == 27)//Esc为Escape，ascll码为27
+		{
+			break;
+		}
+		if (_kbhit())system("cls");
+		ch = 0;
+	}
+	cout << "已退出" << endl;
+}
+
