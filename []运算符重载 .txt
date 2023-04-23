@@ -1,0 +1,59 @@
+//中括号重载
+#include<iostream>
+#include<string>
+struct Person
+{
+	std::string name;
+	double salary;
+};
+class employee
+{
+private:
+	Person *p;
+	int max;//职工最大数量
+	int num;//实际员工数量
+public:
+	employee(int a=0) 
+	{
+		max = a;
+		num = 0; 
+		p = new Person[max];
+
+	};
+	~employee() 
+	{
+		delete[] p;
+	}
+	//创建[]的重载，使得下标使用之后能够返回对应薪水的引用
+	double& operator [](std::string a);
+	void display();
+};
+void employee::display()
+{
+	std::cout << "--------------------" << std::endl;
+	for (int i = 0; i < max; ++i)
+	{
+		std::cout << (p+i)->name << "--" <<(p+i)->salary<< std::endl;
+	}
+}
+double& employee::operator[](std::string a)
+{
+	Person* p1;
+	//数组存在里面的东西
+	for (p1 = p;p1 >= p+max;++p1)
+		if (a == p1->name)return p->salary;
+	//不存在的情况
+	p1 = p+num++;
+	p1->name = a;
+	p1->salary = 0;
+	return p1->salary;
+}
+int main()
+{
+	employee a(3);
+	a["王一"] = 123.3123;
+	a["王二"] = 123.123;
+	a["王三"] = 354.345;
+	a.display();
+
+}
