@@ -1,5 +1,7 @@
 //时钟++运算符重载
 //++time 和 time++
+#include<iostream>
+#include<string>
 class Clock
 {
 private:
