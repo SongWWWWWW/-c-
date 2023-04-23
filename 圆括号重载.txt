@@ -1,0 +1,32 @@
+//圆括号的重载
+#include<iostream>
+class  Time
+{
+private:
+	int hour;
+	int minate;
+	int second;
+public:
+	Time(int a, int b, int c) :hour(a), minate(b), second(c) {};
+	Time& operator ()(int a, int b, int c)
+	{
+		hour = a;
+		minate = b;
+		second = c;
+		return *this;
+	}
+	void show()
+	{
+		std::cout << hour << " " << minate << " " << second << std::endl;
+	}
+
+};
+int main()
+{
+	Time T(1,2,3);
+	T.show();
+	T.operator()(2, 3, 4);
+	T.show();
+	T(4, 5, 6);
+	T.show();
+}
