@@ -1,0 +1,59 @@
+//时钟++运算符重载
+//++time 和 time++
+class Clock
+{
+private:
+	int hour;
+	int minute;
+	int second;
+public:
+	Clock(int a=0,int b=0,int c=0)
+	{
+		if (a >= 0 && b >= 0 && c >= 0 && a < 24 && b < 60 && c < 60)
+		{
+			hour = a;
+			minute = b;
+			second = c;
+		}
+		else
+		{
+			std::cout << "输入错误,重置为0" << std::endl;
+			hour = 0;
+			minute = 0;
+			second = 0;
+		}
+	}
+	void display()
+	{
+		std::cout << hour << ":" << minute << ":" << second << std::endl;
+	}
+	Clock& operator++()//++Clock
+	{
+		second++;
+		if (second >= 60)
+		{
+			second -= 60;
+			if (++minute >= 60)
+			{
+				minute -= 60;
+				hour=(++hour)%24;
+			}
+		}
+		return *this;
+	}
+	Clock operator ++(int)//Clock++,后缀++的标识是参数为int
+	{
+		Clock old = *this;
+		++(*this);
+		return old;
+	}
+};
+int main()
+{
+	Clock a{ 12,59,59 };
+	(a++).display();
+	a.display();
+	(++a).display();
+	a.display();
+}
+//参考CPlusPlusThings
