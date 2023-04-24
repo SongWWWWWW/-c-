@@ -1,0 +1,27 @@
+//运算符之强制类型转换
+//设计该类的类型转换函数，当将circle对象转换为int型时，返回
+//圆的半径；当将它转换为double型时，就返回圆的周长；
+//当将它转换为float型时，就返回圆的面积。
+#include<iostream>
+class circle
+{
+private:
+	double x, y, r;
+public:
+	circle(double x1, double y1, double z1) :x(x1), y(y1), r(z1) {};
+	operator int() { return int(r); };//半径
+	operator double() { return double(2 * 3.14 * r); };//周长
+	operator float() { return float(3.14 * r * r); };//面积
+};
+int main()
+{
+	circle c(1.1, 2.2, 3.3);
+	int a = c;//隐式调用强制类型转换。
+	float b = c;
+	double d = c;
+	std::cout << a << std::endl;
+	std::cout << b << std::endl;
+	std::cout << d << std::endl;
+
+}
+//参考CPlusPlusThings
