@@ -1,0 +1,19 @@
+//函数模板&函数模板重载
+#include<iostream>
+template <class T> 
+T comparemax(T t1, T t2)
+{
+	return t1 > t2 ? t1: t2;
+}
+const char* comparemax(const char* s1, const char* s2)
+{
+	std::cout << "[for debug] "
+		      << "call comparemax template" << std::endl;
+	return strcmp(s1, s2) >= 0 ? s1 : s2;
+}
+int main(int argc,char const *argv[])
+{
+	std::cout << comparemax(1, 2) << std::endl;
+	std::cout << comparemax("zsda", "qweq") << std::endl;
+	return 0;
+}
