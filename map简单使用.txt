@@ -1,0 +1,54 @@
+#include<iostream>
+#include<map>//翻译为映射或者图
+int main()
+{
+	//map<typename1,typename2>mp;
+	//typename1是键的类型，2是值的类型。
+	//若是字符串到整型的映射，必须使用string
+	std::map<int,std::string>mp;
+	std::map<int, std::string>m;
+	//插入pair数据
+	mp.insert(std::pair<int, std::string>(1, "first string"));
+	m.insert(std::pair<int ,std::string>(1, "first string"));
+	//插入value_type数据:
+	mp.insert(std::map<int, std::string>::value_type(2, "second string"));
+	//遍历
+	std::map<int, std::string>::iterator it;
+	for (it = mp.begin(); it != mp.end(); ++it)
+		std::cout << it->first <<"  "<< it->second << std::endl;
+	//用数组下标的方式进行赋值，下标为int，赋值是string
+	mp[12] = "third string";
+	mp[13] = "fourth string";
+	mp[14] = "fifth string";
+	int i = 15;
+	mp[i] = "sixth string";
+	for (it = mp.begin(); it != mp.end(); ++it)//下面的输出格式可以看出，it的类型是pair的迭代器，所以begin返回pair的迭代器
+		std::cout << it->first << "  " << it->second << std::endl;
+	//查找元素count，只是确定是否存在，由于map为一一对应的关系，所以只需要知道第一个即可，有返回1，否则0。
+	std::cout << mp.count(11)<<std::endl;//由于mp为map<int,string>,所以括号为int，上边的数组赋值亦是如此
+	//find查找元素出现的位置,返回数据所在位置的迭代器，若不存在则返回end()的迭代器
+	it = mp.find(12);
+	if (it == mp.end())std::cout << "没有哎" << std::endl;
+	else std::cout << "找到了" << std::endl;
+	//删除元素
+	it = mp.begin();
+	mp.erase(it);//删除迭代器指向的元素
+	it = mp.find(2);
+	std::cout << it->first <<"  " << it->second << std::endl;
+	//mp.erase(mp.begin(), mp.end());//成片删除左闭右开。
+	//std::cout << mp.empty() << std::endl;
+	//返回长度
+	mp.size();//返回长度
+	mp.rbegin();//返回指向最后元素的反向迭代器
+	mp.rend();//返回指向第一之前的反向迭代器
+	for (it = mp.begin(); it != mp.end(); ++it)
+		std::cout << it->first << "  " << it->second << std::endl;
+	for (it = m.begin(); it != m.end(); ++it)
+		std::cout << it->first << "  " << it->second << std::endl;
+	swap(mp, m); 
+	for (it = mp.begin(); it != mp.end(); ++it)
+		std::cout << it->first << "  " << it->second << std::endl;
+	for (it = m.begin(); it != m.end(); ++it)
+		std::cout << it->first << "  " << it->second << std::endl;
+
+}
